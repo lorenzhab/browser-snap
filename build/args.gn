@@ -36,3 +36,4 @@ current_os = "linux"
 optimize_webui = false
 proprietary_codecs = true
 ffmpeg_branding = "Chrome"
+use_vaapi = true

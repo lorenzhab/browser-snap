@@ -106,6 +106,7 @@ parts:
       - libxkbcommon-dev
       - libpam0g-dev
       - libffi-dev
+      - libva-dev
       - uuid-dev
       - chrpath
       - yasm
@@ -118,6 +119,9 @@ parts:
       - libgtk-3-0
       - libnss3
       - libsecret-1-0
+      - libva2
+      - libva-drm2
+      - libva-x11-2
       - libxss1
       - pulseaudio
       - shared-mime-info
