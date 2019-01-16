@@ -122,6 +122,8 @@ parts:
       - libva2
       - libva-drm2
       - libva-x11-2
+      - i965-va-driver-shaders
+      - mesa-va-drivers
       - libxss1
       - pulseaudio
       - shared-mime-info
