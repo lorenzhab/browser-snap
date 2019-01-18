@@ -20,4 +20,3 @@ gn-add-missing-arm-impl-files.patch
 clang-build-only-needed-targets.patch
 gn-bootstrap-remove-sysroot-options.patch
 enable-vaapi.patch
-chromium-70.0.3538.110-vaapi-i686-fpermissive.patch
