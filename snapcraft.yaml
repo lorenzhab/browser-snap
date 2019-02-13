@@ -1,5 +1,5 @@
 name: chromium
-version: 71.0.3578.98
+version: 72.0.3626.96
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -29,6 +29,7 @@ apps:
       - pulseaudio
       - removable-media
       - screen-inhibit-control
+      - u2f-devices
       - unity7 # required for xdg-open to work
       - upower-observe
       - x11
@@ -67,8 +68,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-71.0.3578.98.tar.xz
-    source-checksum: sha512/dbeb90e16c6c05422c1f43e8fe747d60dab49c1fffdd0f33824ca24429f3871bda649eb1e6402470d3d9bb701e47d55d2fff4f46530e3f43e72f516d1837aad6
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-72.0.3626.96.tar.xz
+    source-checksum: sha512/949dde41053dba7408ab96d6fc56668efa46248a7a5a4690642f3de696c25fc9d5a746d82b106f4083bf4a1a5676eea06060c616375f74379a051a6bde4faea0
     after: [chromium-build, gtk3-locales, launcher]
     build-packages:
       - quilt
@@ -85,6 +86,7 @@ parts:
       - gperf
       - subversion
       - cmake
+      - default-jre-headless
       - libxml2-dev
       - libpulse-dev
       - libcups2-dev
