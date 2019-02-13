@@ -16,11 +16,9 @@ Subject: [PATCH] Enable vaapi on Linux
  media/gpu/BUILD.gn                           |  7 +++++++
  10 files changed, 52 insertions(+), 35 deletions(-)
 
-diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index db54ccb61..f32075fb8 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -1797,7 +1797,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -1714,7 +1714,7 @@ const FeatureEntry kFeatureEntries[] = {
          "disable-accelerated-video-decode",
          flag_descriptions::kAcceleratedVideoDecodeName,
          flag_descriptions::kAcceleratedVideoDecodeDescription,
@@ -29,7 +27,7 @@ index db54ccb61..f32075fb8 100644
          SINGLE_DISABLE_VALUE_TYPE(switches::kDisableAcceleratedVideoDecode),
      },
  #if defined(OS_WIN)
-@@ -2456,12 +2456,12 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -2345,12 +2345,12 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(service_manager::features::kXRSandbox)},
  #endif  // ENABLE_ISOLATED_XR_SERVICE
  #endif  // ENABLE_VR
@@ -45,7 +43,7 @@ index db54ccb61..f32075fb8 100644
      {"v8-cache-options", flag_descriptions::kV8CacheOptionsName,
       flag_descriptions::kV8CacheOptionsDescription, kOsAll,
       MULTI_VALUE_TYPE(kV8CacheOptionsChoices)},
-@@ -4371,12 +4371,14 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -4289,12 +4289,14 @@ const FeatureEntry kFeatureEntries[] = {
                                      "AutofillDropdownLayout")},
  #endif  // OS_ANDROID
  
@@ -62,11 +60,9 @@ index db54ccb61..f32075fb8 100644
      {"enable-home-launcher-gestures",
       flag_descriptions::kEnableHomeLauncherGesturesName,
       flag_descriptions::kEnableHomeLauncherGesturesDescription, kOsCrOS,
-diff --git a/chrome/browser/flag_descriptions.cc b/chrome/browser/flag_descriptions.cc
-index 6cc51bbfb..3c4babe3d 100644
 --- a/chrome/browser/flag_descriptions.cc
 +++ b/chrome/browser/flag_descriptions.cc
-@@ -2996,9 +2996,9 @@ const char kTextSuggestionsTouchBarDescription[] =
+@@ -3085,9 +3085,9 @@ const char kTextSuggestionsTouchBarDescr
  
  #endif
  
@@ -78,7 +74,7 @@ index 6cc51bbfb..3c4babe3d 100644
  
  const char kAcceleratedMjpegDecodeName[] =
      "Hardware-accelerated mjpeg decode for captured frame";
-@@ -3006,6 +3006,18 @@ const char kAcceleratedMjpegDecodeDescription[] =
+@@ -3095,6 +3095,18 @@ const char kAcceleratedMjpegDecodeDescri
      "Enable hardware-accelerated mjpeg decode for captured frame where "
      "available.";
  
@@ -97,7 +93,7 @@ index 6cc51bbfb..3c4babe3d 100644
  const char kAllowTouchpadThreeFingerClickName[] = "Touchpad three-finger-click";
  const char kAllowTouchpadThreeFingerClickDescription[] =
      "Enables touchpad three-finger-click as middle button.";
-@@ -3524,12 +3536,6 @@ const char kUseMonitorColorSpaceDescription[] =
+@@ -3665,12 +3677,6 @@ const char kUseMonitorColorSpaceDescript
      "Enables Chrome to use the  color space information provided by the monitor"
      " instead of the default sRGB color space.";
  
@@ -110,11 +106,9 @@ index 6cc51bbfb..3c4babe3d 100644
  const char kVideoPlayerChromecastSupportName[] =
      "Experimental Chromecast support for Video Player";
  const char kVideoPlayerChromecastSupportDescription[] =
-diff --git a/chrome/browser/flag_descriptions.h b/chrome/browser/flag_descriptions.h
-index 944695782..38d8fe144 100644
 --- a/chrome/browser/flag_descriptions.h
 +++ b/chrome/browser/flag_descriptions.h
-@@ -1824,13 +1824,22 @@ extern const char kPermissionPromptPersistenceToggleDescription[];
+@@ -1846,13 +1846,22 @@ extern const char kPermissionPromptPersi
  
  #endif  // defined(OS_MACOSX)
  
@@ -139,7 +133,7 @@ index 944695782..38d8fe144 100644
  extern const char kAllowTouchpadThreeFingerClickName[];
  extern const char kAllowTouchpadThreeFingerClickDescription[];
  
-@@ -2145,9 +2154,6 @@ extern const char kUseMashDescription[];
+@@ -2197,9 +2206,6 @@ extern const char kUseMashDescription[];
  extern const char kUseMonitorColorSpaceName[];
  extern const char kUseMonitorColorSpaceDescription[];
  
@@ -149,11 +143,9 @@ index 944695782..38d8fe144 100644
  extern const char kVideoPlayerChromecastSupportName[];
  extern const char kVideoPlayerChromecastSupportDescription[];
  
-diff --git a/components/viz/service/main/viz_main_impl.cc b/components/viz/service/main/viz_main_impl.cc
-index 6f5f55de7..b90db3738 100644
 --- a/components/viz/service/main/viz_main_impl.cc
 +++ b/components/viz/service/main/viz_main_impl.cc
-@@ -41,7 +41,7 @@ std::unique_ptr<base::Thread> CreateAndStartIOThread() {
+@@ -41,7 +41,7 @@ std::unique_ptr<base::Thread> CreateAndS
    // It should be possible to use |main_task_runner_| for doing IO tasks.
    base::Thread::Options thread_options(base::MessageLoop::TYPE_IO, 0);
    thread_options.priority = base::ThreadPriority::NORMAL;
@@ -162,8 +154,6 @@ index 6f5f55de7..b90db3738 100644
    // TODO(reveman): Remove this in favor of setting it explicitly for each
    // type of process.
    thread_options.priority = base::ThreadPriority::DISPLAY;
-diff --git a/content/gpu/BUILD.gn b/content/gpu/BUILD.gn
-index 8974e441d..d7eba85a9 100644
 --- a/content/gpu/BUILD.gn
 +++ b/content/gpu/BUILD.gn
 @@ -6,6 +6,7 @@ import("//build/config/jumbo.gni")
@@ -174,7 +164,7 @@ index 8974e441d..d7eba85a9 100644
  import("//ui/ozone/ozone.gni")
  
  # See //content/BUILD.gn for how this works.
-@@ -134,4 +135,9 @@ target(link_target_type, "gpu_sources") {
+@@ -136,4 +137,9 @@ target(link_target_type, "gpu_sources")
        (!is_chromecast || is_cast_desktop_build)) {
      configs += [ "//build/config/linux/dri" ]
    }
@@ -184,11 +174,9 @@ index 8974e441d..d7eba85a9 100644
 +    public_configs = [ "//media/gpu:libva_config" ]
 +  }
  }
-diff --git a/content/gpu/gpu_main.cc b/content/gpu/gpu_main.cc
-index 8397889b6..188d960a4 100644
 --- a/content/gpu/gpu_main.cc
 +++ b/content/gpu/gpu_main.cc
-@@ -284,7 +284,7 @@ int GpuMain(const MainFunctionParams& parameters) {
+@@ -284,7 +284,7 @@ int GpuMain(const MainFunctionParams& pa
  
    base::PlatformThread::SetName("CrGpuMain");
  
@@ -197,7 +185,7 @@ index 8397889b6..188d960a4 100644
    // Set thread priority before sandbox initialization.
    base::PlatformThread::SetCurrentThreadPriority(base::ThreadPriority::DISPLAY);
  #endif
-@@ -317,7 +317,7 @@ int GpuMain(const MainFunctionParams& parameters) {
+@@ -317,7 +317,7 @@ int GpuMain(const MainFunctionParams& pa
    GetContentClient()->SetGpuInfo(gpu_init->gpu_info());
  
    base::ThreadPriority io_thread_priority = base::ThreadPriority::NORMAL;
@@ -206,15 +194,12 @@ index 8397889b6..188d960a4 100644
    io_thread_priority = base::ThreadPriority::DISPLAY;
  #endif
  
-diff --git a/gpu/config/software_rendering_list.json b/gpu/config/software_rendering_list.json
-index cb6118b6a..7b8ea0f75 100644
 --- a/gpu/config/software_rendering_list.json
 +++ b/gpu/config/software_rendering_list.json
-@@ -369,17 +369,6 @@
-         "all"
+@@ -370,17 +370,6 @@
        ]
      },
--    {
+     {
 -      "id": 48,
 -      "description": "Accelerated video decode is unavailable on Linux",
 -      "cr_bugs": [137247],
@@ -225,14 +210,13 @@ index cb6118b6a..7b8ea0f75 100644
 -        "accelerated_video_decode"
 -      ]
 -    },
-     {
+-    {
        "id": 50,
        "description": "Disable VMware software renderer on older Mesa",
-diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
-index 41bfa9172..30ca4f40a 100644
+       "cr_bugs": [145531, 332596, 571899, 629434],
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
-@@ -495,7 +495,7 @@ bool IsVideoCaptureAcceleratedJpegDecodingEnabled() {
+@@ -496,7 +496,7 @@ bool IsVideoCaptureAcceleratedJpegDecodi
            switches::kUseFakeJpegDecodeAccelerator)) {
      return true;
    }
@@ -241,8 +225,6 @@ index 41bfa9172..30ca4f40a 100644
    return true;
  #endif
    return false;
-diff --git a/media/filters/BUILD.gn b/media/filters/BUILD.gn
-index d558b537a..9ad090e07 100644
 --- a/media/filters/BUILD.gn
 +++ b/media/filters/BUILD.gn
 @@ -5,6 +5,7 @@
@@ -262,11 +244,9 @@ index d558b537a..9ad090e07 100644
      sources += [
        "h264_bitstream_buffer.cc",
        "h264_bitstream_buffer.h",
-diff --git a/media/gpu/BUILD.gn b/media/gpu/BUILD.gn
-index 07bfdefda..7e33cd747 100644
 --- a/media/gpu/BUILD.gn
 +++ b/media/gpu/BUILD.gn
-@@ -508,6 +508,12 @@ if (use_v4l2_codec || use_vaapi || is_mac || is_win) {
+@@ -508,6 +508,12 @@ if (use_v4l2_codec || use_vaapi || is_ma
    }
  }
  
@@ -276,7 +256,7 @@ index 07bfdefda..7e33cd747 100644
 +  packages = [ "libva" ]
 +}
 +
- if (use_vaapi) {
+ if (use_v4l2_codec || use_vaapi) {
    test("jpeg_encode_accelerator_unittest") {
      deps = [
 @@ -578,6 +584,7 @@ if (is_chromeos || is_linux) {
@@ -287,6 +267,3 @@ index 07bfdefda..7e33cd747 100644
    }
  }
  
--- 
-2.19.2
-
