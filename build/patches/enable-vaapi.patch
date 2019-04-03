@@ -18,7 +18,7 @@ Subject: [PATCH] Enable vaapi on Linux
 
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -1714,7 +1714,7 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -1606,7 +1606,7 @@ const FeatureEntry kFeatureEntries[] = {
          "disable-accelerated-video-decode",
          flag_descriptions::kAcceleratedVideoDecodeName,
          flag_descriptions::kAcceleratedVideoDecodeDescription,
@@ -27,7 +27,7 @@ Subject: [PATCH] Enable vaapi on Linux
          SINGLE_DISABLE_VALUE_TYPE(switches::kDisableAcceleratedVideoDecode),
      },
  #if defined(OS_WIN)
-@@ -2345,12 +2345,12 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -2216,12 +2216,12 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(service_manager::features::kXRSandbox)},
  #endif  // ENABLE_ISOLATED_XR_SERVICE
  #endif  // ENABLE_VR
@@ -43,7 +43,7 @@ Subject: [PATCH] Enable vaapi on Linux
      {"v8-cache-options", flag_descriptions::kV8CacheOptionsName,
       flag_descriptions::kV8CacheOptionsDescription, kOsAll,
       MULTI_VALUE_TYPE(kV8CacheOptionsChoices)},
-@@ -4289,12 +4289,14 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -4094,12 +4094,14 @@ const FeatureEntry kFeatureEntries[] = {
                                      "AutofillDropdownLayout")},
  #endif  // OS_ANDROID
  
@@ -62,7 +62,7 @@ Subject: [PATCH] Enable vaapi on Linux
       flag_descriptions::kEnableHomeLauncherGesturesDescription, kOsCrOS,
 --- a/chrome/browser/flag_descriptions.cc
 +++ b/chrome/browser/flag_descriptions.cc
-@@ -3085,9 +3085,9 @@ const char kTextSuggestionsTouchBarDescr
+@@ -3096,9 +3096,9 @@ const char kTextSuggestionsTouchBarDescr
  
  #endif
  
@@ -74,7 +74,7 @@ Subject: [PATCH] Enable vaapi on Linux
  
  const char kAcceleratedMjpegDecodeName[] =
      "Hardware-accelerated mjpeg decode for captured frame";
-@@ -3095,6 +3095,18 @@ const char kAcceleratedMjpegDecodeDescri
+@@ -3106,6 +3106,18 @@ const char kAcceleratedMjpegDecodeDescri
      "Enable hardware-accelerated mjpeg decode for captured frame where "
      "available.";
  
@@ -93,7 +93,7 @@ Subject: [PATCH] Enable vaapi on Linux
  const char kAllowTouchpadThreeFingerClickName[] = "Touchpad three-finger-click";
  const char kAllowTouchpadThreeFingerClickDescription[] =
      "Enables touchpad three-finger-click as middle button.";
-@@ -3665,12 +3677,6 @@ const char kUseMonitorColorSpaceDescript
+@@ -3625,12 +3637,6 @@ const char kUseMonitorColorSpaceDescript
      "Enables Chrome to use the  color space information provided by the monitor"
      " instead of the default sRGB color space.";
  
@@ -108,7 +108,7 @@ Subject: [PATCH] Enable vaapi on Linux
  const char kVideoPlayerChromecastSupportDescription[] =
 --- a/chrome/browser/flag_descriptions.h
 +++ b/chrome/browser/flag_descriptions.h
-@@ -1846,13 +1846,22 @@ extern const char kPermissionPromptPersi
+@@ -1842,13 +1842,22 @@ extern const char kPermissionPromptPersi
  
  #endif  // defined(OS_MACOSX)
  
@@ -133,7 +133,7 @@ Subject: [PATCH] Enable vaapi on Linux
  extern const char kAllowTouchpadThreeFingerClickName[];
  extern const char kAllowTouchpadThreeFingerClickDescription[];
  
-@@ -2197,9 +2206,6 @@ extern const char kUseMashDescription[];
+@@ -2170,9 +2179,6 @@ extern const char kUseMashDescription[];
  extern const char kUseMonitorColorSpaceName[];
  extern const char kUseMonitorColorSpaceDescription[];
  
@@ -145,7 +145,7 @@ Subject: [PATCH] Enable vaapi on Linux
  
 --- a/components/viz/service/main/viz_main_impl.cc
 +++ b/components/viz/service/main/viz_main_impl.cc
-@@ -41,7 +41,7 @@ std::unique_ptr<base::Thread> CreateAndS
+@@ -35,7 +35,7 @@ std::unique_ptr<base::Thread> CreateAndS
    // It should be possible to use |main_task_runner_| for doing IO tasks.
    base::Thread::Options thread_options(base::MessageLoop::TYPE_IO, 0);
    thread_options.priority = base::ThreadPriority::NORMAL;
@@ -176,7 +176,7 @@ Subject: [PATCH] Enable vaapi on Linux
  }
 --- a/content/gpu/gpu_main.cc
 +++ b/content/gpu/gpu_main.cc
-@@ -284,7 +284,7 @@ int GpuMain(const MainFunctionParams& pa
+@@ -290,7 +290,7 @@ int GpuMain(const MainFunctionParams& pa
  
    base::PlatformThread::SetName("CrGpuMain");
  
@@ -185,7 +185,7 @@ Subject: [PATCH] Enable vaapi on Linux
    // Set thread priority before sandbox initialization.
    base::PlatformThread::SetCurrentThreadPriority(base::ThreadPriority::DISPLAY);
  #endif
-@@ -317,7 +317,7 @@ int GpuMain(const MainFunctionParams& pa
+@@ -323,7 +323,7 @@ int GpuMain(const MainFunctionParams& pa
    GetContentClient()->SetGpuInfo(gpu_init->gpu_info());
  
    base::ThreadPriority io_thread_priority = base::ThreadPriority::NORMAL;
@@ -216,7 +216,7 @@ Subject: [PATCH] Enable vaapi on Linux
        "cr_bugs": [145531, 332596, 571899, 629434],
 --- a/media/base/media_switches.cc
 +++ b/media/base/media_switches.cc
-@@ -496,7 +496,7 @@ bool IsVideoCaptureAcceleratedJpegDecodi
+@@ -502,7 +502,7 @@ bool IsVideoCaptureAcceleratedJpegDecodi
            switches::kUseFakeJpegDecodeAccelerator)) {
      return true;
    }
@@ -235,7 +235,7 @@ Subject: [PATCH] Enable vaapi on Linux
  
  jumbo_source_set("filters") {
    # Do not expand the visibility here without double-checking with OWNERS, this
-@@ -200,7 +201,7 @@ jumbo_source_set("filters") {
+@@ -202,7 +203,7 @@ jumbo_source_set("filters") {
      deps += [ "//media/base/android" ]
    }
  
@@ -246,7 +246,7 @@ Subject: [PATCH] Enable vaapi on Linux
        "h264_bitstream_buffer.h",
 --- a/media/gpu/BUILD.gn
 +++ b/media/gpu/BUILD.gn
-@@ -508,6 +508,12 @@ if (use_v4l2_codec || use_vaapi || is_ma
+@@ -503,6 +503,12 @@ if (use_v4l2_codec || use_vaapi || is_ma
    }
  }
  
@@ -259,7 +259,7 @@ Subject: [PATCH] Enable vaapi on Linux
  if (use_v4l2_codec || use_vaapi) {
    test("jpeg_encode_accelerator_unittest") {
      deps = [
-@@ -578,6 +584,7 @@ if (is_chromeos || is_linux) {
+@@ -573,6 +579,7 @@ if (is_chromeos || is_linux) {
      if (use_ozone) {
        deps += [ "//ui/ozone" ]
      }
