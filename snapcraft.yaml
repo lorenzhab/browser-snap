@@ -1,5 +1,5 @@
 name: chromium
-version: 72.0.3626.109
+version: 73.0.3683.86
 summary: Chromium web browser, open-source version of Chrome
 description: |
  An open-source browser project that aims to build a safer, faster, and more
@@ -15,7 +15,6 @@ apps:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
     plugs:
-      - browser-sandbox
       - camera
       - cups-control
       - desktop
@@ -31,6 +30,29 @@ apps:
       - screen-inhibit-control
       - u2f-devices
       - unity7 # required for xdg-open to work
+      - upower-observe
+      - x11
+  chromedriver:
+    command: usr/lib/chromium-browser/chromedriver
+    plugs:
+      - network-bind
+      # + all the plugs required by chromium, so that when chromedriver
+      # executes chromium it inherits the correct set of permissions
+      - camera
+      - cups-control
+      - desktop
+      - gsettings
+      - home
+      - mount-observe
+      - network
+      - network-manager
+      - opengl
+      - password-manager-service
+      - pulseaudio
+      - removable-media
+      - screen-inhibit-control
+      - u2f-devices
+      - unity7
       - upower-observe
       - x11
 
@@ -50,6 +72,9 @@ plugs:
     interface: content
     target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
+  chromium-config:
+    interface: personal-files
+    read: [$HOME/.config/chromium]
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
@@ -68,8 +93,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-72.0.3626.109.tar.xz
-    source-checksum: sha512/1eb681d085657c7ae3485164f8e2e80c12f65361072f0101d3659c6161e2bf1d647226e98860cbcda8ff1f44542ac32508eb19f3a645886e87c37fae6affeb1c
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-73.0.3683.86.tar.xz
+    source-checksum: sha512/5dd450640c1ea30f7941231e8c459aec0312c18e089b2c8b9104c4ee835a8fa389f5fb9b301b46d87ce260956eaf3e3bd6aff6ae54c279a303aa757537cace15
     after: [chromium-build, gtk3-locales, launcher]
     build-packages:
       - quilt
@@ -169,7 +194,7 @@ parts:
       T=$SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser
       mkdir -p $T
       cd $OUT
-      cp chrome chrome_*.pak headless_lib.pak icudtl.dat \
+      cp chrome chromedriver chrome_*.pak headless_lib.pak icudtl.dat \
           libffmpeg.so natives_blob.bin resources.pak \
           snapshot_blob.bin v8_context_snapshot.bin \
           $T/
@@ -198,6 +223,12 @@ parts:
     source: launcher
     organize:
       '*': bin/
+
+  tests:
+    plugin: dump
+    source: tests
+    organize:
+      '*': tests/
 
   shared-mime-info:
     after: [launcher, chromium]
