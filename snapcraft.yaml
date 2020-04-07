@@ -91,6 +91,8 @@ plugs:
 layout:
   /usr/lib/man-db:
     bind: $SNAP/usr/lib/man-db
+  /usr/share/zenity:
+    symlink: $SNAP/usr/share/zenity
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
@@ -298,6 +300,8 @@ parts:
     source: launcher
     organize:
       '*': bin/
+    stage-packages:
+      - zenity
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
