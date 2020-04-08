@@ -41,7 +41,7 @@ fi
 # Ref: https://launchpad.net/bugs/1864901
 check_current_symlink() {
   CURRENT_SNAP_REVISION=$SNAP_REVISION
-  REVISIONS_DIR=$(dirname $SNAP_USER_DATA)
+  REVISIONS_DIR=$(dirname $SNAP)
   CURRENT_SYMLINK="$REVISIONS_DIR/current"
   while true; do
     NEW_SNAP_REVISION=$(readlink $CURRENT_SYMLINK)
