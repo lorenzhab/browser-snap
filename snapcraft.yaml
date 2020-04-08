@@ -113,7 +113,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-80.0.3987.163.tar.xz
     source-checksum: sha512/d6c25035870276cc0c8b9608ffd61cbc8d9c5beac3894163433d3b379b1c11ba00973c4268c2128a320407d2086d1c00b0896ec974a7575a4802ea0596d48a1c
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes]
+    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, zenity]
     build-packages:
       - quilt
       - wget
@@ -300,8 +300,12 @@ parts:
     source: launcher
     organize:
       '*': bin/
+
+  zenity:
+    plugin: nil
     stage-packages:
       - zenity
+    # TODO: use prime to exclude everything that's not strictly needed
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
