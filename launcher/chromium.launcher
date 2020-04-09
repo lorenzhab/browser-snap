@@ -47,8 +47,9 @@ check_current_symlink() {
     NEW_SNAP_REVISION=$(readlink $CURRENT_SYMLINK)
     if [ "$NEW_SNAP_REVISION" != "$CURRENT_SNAP_REVISION" ]; then
       CURRENT_SNAP_REVISION=$NEW_SNAP_REVISION
-      zenity --notification --window-icon="$SNAP/chromium.png" \
-        --text="Chromium has been updated.\nIt needs to be restarted for changes to take effect."
+      notify-send --icon="$SNAP/chromium.png" --app-name="Chromium" \
+        "Chromium has been updated." \
+        "It needs to be restarted for changes to take effect."
     fi
     sleep 60
   done

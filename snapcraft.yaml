@@ -91,8 +91,6 @@ plugs:
 layout:
   /usr/lib/man-db:
     bind: $SNAP/usr/lib/man-db
-  /usr/share/zenity:
-    symlink: $SNAP/usr/share/zenity
 
 parts:
   # Launchpad builders have a timeout for how long they are allowed to access
@@ -113,7 +111,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-80.0.3987.163.tar.xz
     source-checksum: sha512/d6c25035870276cc0c8b9608ffd61cbc8d9c5beac3894163433d3b379b1c11ba00973c4268c2128a320407d2086d1c00b0896ec974a7575a4802ea0596d48a1c
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, zenity]
+    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send]
     build-packages:
       - quilt
       - wget
@@ -301,35 +299,12 @@ parts:
     organize:
       '*': bin/
 
-  zenity:
+  notify-send:
     plugin: nil
     stage-packages:
-      - zenity
+      - libnotify-bin
     prime:
-      - -etc
-      - -usr/lib/aspell
-      - -usr/lib/emacsen-common
-      - -usr/lib/ispell
-      - -usr/sbin
-      - -usr/share/apport
-      - -usr/share/aspell
-      - -usr/share/bug
-      - -usr/share/dict
-      - -usr/share/dictionaries-common
-      - -usr/share/doc
-      - -usr/share/doc-base
-      - -usr/share/emacs
-      - -usr/share/enchant
-      - -usr/share/glvnd
-      - -usr/share/GConf
-      - -usr/share/help
-      - -usr/share/icons
-      - -usr/share/iso-codes
-      - -usr/share/lintian
-      - -usr/share/man
-      - -usr/share/perl5
-      - -usr/share/pkg-config
-      - -var
+      - -usr/share
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
