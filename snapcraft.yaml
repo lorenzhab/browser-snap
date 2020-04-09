@@ -305,7 +305,31 @@ parts:
     plugin: nil
     stage-packages:
       - zenity
-    # TODO: use prime to exclude everything that's not strictly needed
+    prime:
+      - -etc
+      - -usr/lib/aspell
+      - -usr/lib/emacsen-common
+      - -usr/lib/ispell
+      - -usr/sbin
+      - -usr/share/apport
+      - -usr/share/aspell
+      - -usr/share/bug
+      - -usr/share/dict
+      - -usr/share/dictionaries-common
+      - -usr/share/doc
+      - -usr/share/doc-base
+      - -usr/share/emacs
+      - -usr/share/enchant
+      - -usr/share/glvnd
+      - -usr/share/GConf
+      - -usr/share/help
+      - -usr/share/icons
+      - -usr/share/iso-codes
+      - -usr/share/lintian
+      - -usr/share/man
+      - -usr/share/perl5
+      - -usr/share/pkg-config
+      - -var
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
