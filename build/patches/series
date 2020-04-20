@@ -19,4 +19,9 @@ build-script-predownload-pgo-training-source.patch
 build-script-fix-bootstrap-targets.patch
 chromedriver-snap-compatibility.patch
 node-update-binaries-arch-specific.patch
-enable-vaapi.patch
+
+fedora-vaapi/enable-vaapi.patch
+fedora-vaapi/chromium-80.0.3987.122-vaapi-i686-fpermissive.patch
+fedora-vaapi/chromium-81.0.4044.92-fix-vaapi-on-intel.patch
+fedora-vaapi/chromium-81-vaapi-r737459.patch
+fedora-vaapi/chromium-81-vaapi-r738595.patch
