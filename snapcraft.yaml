@@ -112,7 +112,7 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-81.0.4044.138.tar.xz
     source-checksum: sha512/9f686b27b2f8ea5c15f50b0ddcd24745aec41e28af8c38618e18771401bd5cfb26939b9ac49973ea804cda458a939c1a6ad59cb24fb1937b7687c3d908183437
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send]
+    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send, libva]
     build-packages:
       - quilt
       - wget
@@ -155,7 +155,6 @@ parts:
       - libpam0g-dev
       - libffi-dev
       - libgbm-dev
-      - libva-dev
       - uuid-dev
       - chrpath
       - yasm
@@ -168,11 +167,6 @@ parts:
       - libgtk-3-0
       - libnss3
       - libsecret-1-0
-      - libva2
-      - libva-drm2
-      - libva-x11-2
-      - i965-va-driver-shaders
-      - mesa-va-drivers
       - libxss1
       - pulseaudio
       - shared-mime-info
@@ -434,3 +428,43 @@ parts:
       mkdir -p usr/bin
       cd usr/bin
       ln -s /usr/bin/xdg-open xdg-email
+
+  # Build and install a more recent version of the VA-API library than what is
+  # available in 18.04, because newer drivers depend on a newer version of the
+  # ABI.
+  libva:
+    source: https://github.com/intel/libva/releases/download/2.7.1/libva-2.7.1.tar.bz2
+    source-checksum: sha1/75010bde98182c707e20910253b735cea43e068d
+    plugin: meson
+    meson-parameters: ["--prefix=/usr"]
+    build-packages:
+      - gcc
+      - libc6-dev
+      - libdrm-dev
+      - libgl1-mesa-dev
+      - libwayland-dev
+      - libx11-dev
+      - libxext-dev
+      - libxfixes-dev
+      - pkg-config
+    stage-packages:
+      - libdrm2
+      - libgl1
+      - libglvnd0
+      - libglx0
+      - libwayland-client0
+      - libx11-6
+      - libxau6
+      - libxcb1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
+    prime:
+      - -etc
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+      - -usr/share/bug
+      - -usr/share/doc
+      - -usr/share/libsensors4
+      - -usr/share/lintian
+      - -usr/share/man
