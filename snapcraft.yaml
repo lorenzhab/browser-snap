@@ -221,6 +221,7 @@ parts:
       mkdir -p $OUT
       cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
       $OUT/gn gen $OUT
+      export PKG_CONFIG_PATH=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
       ninja -C $OUT chrome chrome_sandbox chromedriver
 
       # Strip debug symbols off the chrome binary
