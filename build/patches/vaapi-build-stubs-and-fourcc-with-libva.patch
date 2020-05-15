@@ -19,7 +19,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    ]
 +
 +  if (use_vaapi) {
-+    configs = [ "//build/config/linux/libva" ]
++    configs += [ "//build/config/linux/libva" ]
 +  }
  }
  
