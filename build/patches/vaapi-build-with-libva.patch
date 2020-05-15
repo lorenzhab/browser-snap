@@ -1,4 +1,4 @@
-Description: ensure that the vaapi stubs and fourcc are built against (a potentially custom) libva
+Description: ensure that various components that use it are built against (a potentially custom) libva
 Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/media/gpu/vaapi/BUILD.gn
@@ -24,3 +24,13 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  }
  
  source_set("video_frame_mapper") {
+--- a/media/gpu/BUILD.gn
++++ b/media/gpu/BUILD.gn
+@@ -157,6 +157,7 @@ component("gpu") {
+ 
+   if (use_vaapi) {
+     public_deps += [ "//media/gpu/vaapi" ]
++    configs += [ "//build/config/linux/libva" ]
+   }
+ 
+   if (is_win) {
