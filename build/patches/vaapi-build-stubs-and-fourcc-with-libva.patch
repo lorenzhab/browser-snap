@@ -1,0 +1,26 @@
+Description: ensure that the vaapi stubs and fourcc are built against (a potentially custom) libva
+Author: Olivier Tilloy <olivier.tilloy@canonical.com>
+
+--- a/media/gpu/vaapi/BUILD.gn
++++ b/media/gpu/vaapi/BUILD.gn
+@@ -24,6 +24,7 @@ generate_stubs("libva_stubs") {
+   }
+   output_name = "va_stubs"
+   deps = [ "//base" ]
++  configs = [ "//build/config/linux/libva" ]
+ }
+ 
+ source_set("vaapi") {
+--- a/media/gpu/chromeos/BUILD.gn
++++ b/media/gpu/chromeos/BUILD.gn
+@@ -103,6 +103,10 @@ source_set("fourcc") {
+     "//media/gpu:buildflags",
+     "//media/gpu:common",
+   ]
++
++  if (use_vaapi) {
++    configs = [ "//build/config/linux/libva" ]
++  }
+ }
+ 
+ source_set("video_frame_mapper") {
