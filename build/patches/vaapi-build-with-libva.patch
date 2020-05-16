@@ -13,7 +13,15 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  source_set("vaapi") {
 --- a/media/gpu/chromeos/BUILD.gn
 +++ b/media/gpu/chromeos/BUILD.gn
-@@ -103,6 +103,10 @@ source_set("fourcc") {
+@@ -32,6 +32,7 @@ source_set("chromeos") {
+ 
+   if (use_vaapi) {
+     deps += [ "//media/gpu/vaapi" ]
++    configs += [ "//build/config/linux/libva" ]
+   }
+ 
+   if (use_v4l2_codec) {
+@@ -103,6 +104,10 @@ source_set("fourcc") {
      "//media/gpu:buildflags",
      "//media/gpu:common",
    ]
