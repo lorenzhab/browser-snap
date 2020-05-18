@@ -112,7 +112,17 @@ parts:
     plugin: nil
     source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-81.0.4044.138.tar.xz
     source-checksum: sha512/9f686b27b2f8ea5c15f50b0ddcd24745aec41e28af8c38618e18771401bd5cfb26939b9ac49973ea804cda458a939c1a6ad59cb24fb1937b7687c3d908183437
-    after: [chromium-build, gtk3-locales, launcher, manpage, gtk-key-themes, notify-send, libva]
+    after:
+      - chromium-build
+      - gtk3-locales
+      - launcher
+      - manpage
+      - gtk-key-themes
+      - notify-send
+      - libva
+      - intel-vaapi-driver
+      - intel-gmmlib
+      - intel-media-driver
     build-packages:
       - quilt
       - wget
@@ -297,7 +307,7 @@ parts:
       - -var
 
   launcher:
-    after: [desktop-gtk3]
+    after: [ desktop-gtk3 ]
     plugin: dump
     source: launcher
     organize:
@@ -383,7 +393,7 @@ parts:
       - -var
 
   shared-mime-info:
-    after: [launcher, chromium]
+    after: [ launcher, chromium ]
     plugin: nil
     override-pull: ""
     override-prime: |
@@ -437,7 +447,7 @@ parts:
     source: https://github.com/intel/libva/releases/download/2.7.1/libva-2.7.1.tar.bz2
     source-checksum: sha1/75010bde98182c707e20910253b735cea43e068d
     plugin: meson
-    meson-parameters: ["--prefix=/usr"]
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
     build-packages:
       - gcc
       - libc6-dev
@@ -464,8 +474,56 @@ parts:
       - -etc
       - -usr/include
       - -usr/lib/*/pkgconfig
-      - -usr/share/bug
-      - -usr/share/doc
-      - -usr/share/libsensors4
-      - -usr/share/lintian
-      - -usr/share/man
+      - -usr/share
+
+  # i965_drv_video.so
+  intel-vaapi-driver:
+    after: [ libva ]
+    source: https://github.com/intel/intel-vaapi-driver/releases/download/2.4.0/intel-vaapi-driver-2.4.0.tar.bz2
+    source-checksum: sha1/5f805f6a040f5beab6693d11765618cc92d2076b
+    plugin: meson
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
+    build-packages:
+      - gcc
+      - libdrm-dev
+      - libwayland-bin
+      - libwayland-dev
+      - pkg-config
+    stage-packages:
+      - libdrm2
+      - libdrm-intel1
+      - libpciaccess0
+    prime:
+      - -usr/share
+
+  intel-gmmlib:
+    source: https://github.com/intel/gmmlib/archive/intel-gmmlib-20.1.1.tar.gz
+    plugin: cmake
+    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
+    build-packages:
+      - g++
+      - sed
+    override-stage: |
+      snapcraftctl stage
+      sed -i -e 's|includedir=/usr|includedir=${prefix}|' \
+             -e 's|libdir=/usr|libdir=${prefix}|' \
+             usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig/igdgmm.pc
+    prime:
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+
+  # iHD_drv_video.so
+  intel-media-driver:
+    after: [ libva, intel-gmmlib ]
+    source: https://github.com/intel/media-driver/archive/intel-media-20.1.1.tar.gz
+    plugin: cmake
+    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
+    build-packages:
+      - g++
+      - libpciaccess-dev
+    stage-packages:
+      - libpciaccess0
+    prime:
+      - -usr/include
+      - -usr/lib/*/pkgconfig
+      - -usr/share
