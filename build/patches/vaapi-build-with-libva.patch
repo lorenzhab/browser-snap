@@ -3,8 +3,8 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
 
 --- a/media/gpu/vaapi/BUILD.gn
 +++ b/media/gpu/vaapi/BUILD.gn
-@@ -24,6 +24,7 @@ generate_stubs("libva_stubs") {
-   }
+@@ -23,6 +23,7 @@ generate_stubs("libva_stubs") {
+ 
    output_name = "va_stubs"
    deps = [ "//base" ]
 +  configs = [ "//build/config/linux/libva" ]
@@ -21,7 +21,7 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
    }
  
    if (use_v4l2_codec) {
-@@ -103,6 +104,10 @@ source_set("fourcc") {
+@@ -107,6 +108,10 @@ source_set("fourcc") {
      "//media/gpu:buildflags",
      "//media/gpu:common",
    ]
@@ -34,10 +34,10 @@ Author: Olivier Tilloy <olivier.tilloy@canonical.com>
  source_set("video_frame_mapper") {
 --- a/media/gpu/BUILD.gn
 +++ b/media/gpu/BUILD.gn
-@@ -157,6 +157,7 @@ component("gpu") {
- 
-   if (use_vaapi) {
-     public_deps += [ "//media/gpu/vaapi" ]
+@@ -160,6 +160,7 @@ component("gpu") {
+       "//media/gpu/vaapi",
+       "//media/gpu/vaapi:common",
+     ]
 +    configs += [ "//build/config/linux/libva" ]
    }
  
