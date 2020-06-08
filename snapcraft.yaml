@@ -120,6 +120,7 @@ parts:
       - gtk-key-themes
       - notify-send
       - libva
+      - mesa-va-drivers
       - intel-vaapi-driver
       - intel-gmmlib
       - intel-media-driver
@@ -476,6 +477,14 @@ parts:
       - -etc
       - -usr/include
       - -usr/lib/*/pkgconfig
+      - -usr/share
+
+  # gallium drivers
+  mesa-va-drivers:
+    plugin: nil
+    stage-packages:
+      - mesa-va-drivers
+    prime:
       - -usr/share
 
   # i965_drv_video.so
