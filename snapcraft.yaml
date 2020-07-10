@@ -15,6 +15,7 @@ apps:
     environment:
       DISABLE_WAYLAND: 1
       CHROME_DESKTOP: chromium.desktop
+      CHROME_CONFIG_HOME: $SNAP_USER_COMMON
     plugs:
       - audio-playback
       - audio-record
@@ -33,6 +34,7 @@ apps:
       - raw-usb # for WebUSB (https://launchpad.net/bugs/1780678)
       - removable-media
       - screen-inhibit-control
+      - system-packages-doc
       - u2f-devices
       - unity7 # required for xdg-open to work
       - upower-observe
@@ -62,6 +64,7 @@ apps:
       - raw-usb
       - removable-media
       - screen-inhibit-control
+      - system-packages-doc
       - u2f-devices
       - unity7
       - upower-observe
@@ -110,8 +113,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-83.0.4103.97.tar.xz
-    source-checksum: sha512/5b7d7ab2f4e3d7ee965be4bba2d7ee1f3ce7f062920547639fd8d695eb8ef4a94153a99ecd10fb13b46fbcdec59ed3792231fec9c0773a457a60a551ebbe53c9
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-83.0.4103.116.tar.xz
+    source-checksum: sha512/dbd92fb04183ec1402401388f70b18b95040083c9ea8bf2ea6b1692fddc375b090968b13afb010ebf412b480b34747eb2c82709adbeb386cccf60b972f23254f
     after:
       - chromium-build
       - gtk3-locales
@@ -233,6 +236,10 @@ parts:
       OUT=out/Release
       mkdir -p $OUT
       cp $SNAPCRAFT_STAGE/build/args.gn $OUT/
+      if [ $(arch) = "armv7l" ]; then
+        # Do not build with NEON on armhf (https://launchpad.net/bugs/1884856)
+        echo "arm_use_neon = false" >> $OUT/args.gn
+      fi
       export PKG_CONFIG_PATH=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig
       $OUT/gn gen $OUT
       ninja -C $OUT chrome chrome_sandbox chromedriver
@@ -315,13 +322,6 @@ parts:
     source: launcher
     organize:
       '*': bin/
-
-  notify-send:
-    plugin: nil
-    stage-packages:
-      - libnotify-bin
-    prime:
-      - -usr/share
 
   desktop-gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
