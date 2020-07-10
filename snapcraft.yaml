@@ -121,7 +121,6 @@ parts:
       - launcher
       - manpage
       - gtk-key-themes
-      - notify-send
       - libva
       - mesa-va-drivers
       - intel-vaapi-driver
