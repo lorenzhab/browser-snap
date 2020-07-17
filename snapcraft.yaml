@@ -498,12 +498,11 @@ parts:
     plugin: meson
     meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
     build-packages:
-      - on amd64,i386:
-        - gcc
-        - libdrm-dev
-        - libwayland-bin
-        - libwayland-dev
-        - pkg-config
+      - gcc
+      - libdrm-dev
+      - libwayland-bin
+      - libwayland-dev
+      - pkg-config
     override-build: |
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
@@ -521,9 +520,8 @@ parts:
     plugin: cmake
     configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
     build-packages:
-      - on amd64,i386:
-        - g++
-        - sed
+      - g++
+      - sed
     override-build: |
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
@@ -546,9 +544,8 @@ parts:
     plugin: cmake
     configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
     build-packages:
-      - on amd64,i386:
-        - g++
-        - libpciaccess-dev
+      - g++
+      - libpciaccess-dev
     override-build: |
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
