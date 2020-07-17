@@ -542,12 +542,13 @@ parts:
     after: [ libva, intel-gmmlib ]
     source: https://github.com/intel/media-driver/archive/intel-media-20.1.1.tar.gz
     plugin: cmake
-    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
+    configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr", "-DCMAKE_CXX_FLAGS='-D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64'" ]
     build-packages:
       - g++
       - libpciaccess-dev
     override-build: |
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+        sed -i -e 's|-m${ARCH}||' media_driver/cmake/linux/media_compile_flags_linux.cmake
         snapcraftctl build
       fi
     stage-packages:
