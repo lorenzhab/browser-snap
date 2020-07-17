@@ -498,19 +498,21 @@ parts:
     plugin: meson
     meson-parameters: ["--prefix=/usr", "-Dbuildtype=release"]
     build-packages:
-      - gcc
-      - libdrm-dev
-      - libwayland-bin
-      - libwayland-dev
-      - pkg-config
+      - on amd64,i386:
+        - gcc
+        - libdrm-dev
+        - libwayland-bin
+        - libwayland-dev
+        - pkg-config
     override-build: |
-      if [ $(arch) = "x86_64" ]; then
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
       fi
     stage-packages:
-      - libdrm2
-      - libdrm-intel1
-      - libpciaccess0
+      - on amd64,i386:
+        - libdrm2
+        - libdrm-intel1
+        - libpciaccess0
     prime:
       - -usr/share
 
@@ -519,15 +521,16 @@ parts:
     plugin: cmake
     configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
     build-packages:
-      - g++
-      - sed
+      - on amd64,i386:
+        - g++
+        - sed
     override-build: |
-      if [ $(arch) = "x86_64" ]; then
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
       fi
     override-stage: |
-      snapcraftctl stage
-      if [ $(arch) = "x86_64" ]; then
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+        snapcraftctl stage
         sed -i -e 's|includedir=/usr|includedir=${prefix}|' \
                -e 's|libdir=/usr|libdir=${prefix}|' \
                usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig/igdgmm.pc
@@ -543,14 +546,16 @@ parts:
     plugin: cmake
     configflags: [ "-DCMAKE_INSTALL_PREFIX=/usr" ]
     build-packages:
-      - g++
-      - libpciaccess-dev
+      - on amd64,i386:
+        - g++
+        - libpciaccess-dev
     override-build: |
-      if [ $(arch) = "x86_64" ]; then
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
       fi
     stage-packages:
-      - libpciaccess0
+      - on amd64,i386:
+        - libpciaccess0
     prime:
       - -usr/include
       - -usr/lib/*/pkgconfig
