@@ -499,6 +499,10 @@ parts:
       - libwayland-bin
       - libwayland-dev
       - pkg-config
+    override-build: |
+      if [ $(arch) = "x86_64" ]; then
+        snapcraftctl build
+      fi
     stage-packages:
       - libdrm2
       - libdrm-intel1
@@ -513,11 +517,17 @@ parts:
     build-packages:
       - g++
       - sed
+    override-build: |
+      if [ $(arch) = "x86_64" ]; then
+        snapcraftctl build
+      fi
     override-stage: |
       snapcraftctl stage
-      sed -i -e 's|includedir=/usr|includedir=${prefix}|' \
-             -e 's|libdir=/usr|libdir=${prefix}|' \
-             usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig/igdgmm.pc
+      if [ $(arch) = "x86_64" ]; then
+        sed -i -e 's|includedir=/usr|includedir=${prefix}|' \
+               -e 's|libdir=/usr|libdir=${prefix}|' \
+               usr/lib/$SNAPCRAFT_ARCH_TRIPLET/pkgconfig/igdgmm.pc
+      fi
     prime:
       - -usr/include
       - -usr/lib/*/pkgconfig
@@ -531,6 +541,10 @@ parts:
     build-packages:
       - g++
       - libpciaccess-dev
+    override-build: |
+      if [ $(arch) = "x86_64" ]; then
+        snapcraftctl build
+      fi
     stage-packages:
       - libpciaccess0
     prime:
