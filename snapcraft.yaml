@@ -547,9 +547,11 @@ parts:
       - g++
       - libpciaccess-dev
     override-build: |
-      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
+      if [ $(arch) = "i686" ]; then
         sed -i -e 's|-m${ARCH}||' \
                $SNAPCRAFT_PART_SRC/media_driver/cmake/linux/media_compile_flags_linux.cmake
+      fi
+      if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
       fi
     stage-packages:
