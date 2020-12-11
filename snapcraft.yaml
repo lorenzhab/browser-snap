@@ -12,7 +12,7 @@ compression: lzo
 
 apps:
   chromium:
-    extensions: [gnome-3-28]
+    extensions: [gnome-3-34]
     command: bin/chromium.launcher
     desktop: bin/chromium.desktop
     common-id: chromium-browser.desktop
@@ -43,7 +43,7 @@ apps:
     slots:
       - mpris
   chromedriver:
-    extensions: [gnome-3-28]
+    extensions: [gnome-3-34]
     command: usr/lib/chromium-browser/chromedriver
     plugs:
       - network-bind
