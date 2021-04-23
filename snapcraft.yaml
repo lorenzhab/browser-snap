@@ -115,6 +115,7 @@ parts:
       - mesa-va-drivers
       - intel-vaapi-driver
       - intel-media-driver
+      - pipewire
     build-packages:
       - quilt
       - wget
@@ -481,3 +482,15 @@ parts:
       - -usr/include
       - -usr/lib/*/pkgconfig
       - -usr/share
+
+  # PipeWire
+  pipewire:
+    source: https://gitlab.freedesktop.org/pipewire/pipewire/-/archive/0.3.26/pipewire-0.3.26.tar.gz
+    plugin: meson
+    meson-parameters: ["--prefix=/usr", "-Dbuildtype=release", "-Dalsa=disabled", "-Dpipewire-alsa=disabled"]
+    build-packages:
+      - pkg-config
+      - libdbus-1-dev
+    stage-packages:
+      - libdbus-1-3
+      - libsystemd0
