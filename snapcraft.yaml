@@ -506,9 +506,12 @@ parts:
       - --strip
       - -Dalsa=disabled
       - -Dpipewire-alsa=disabled
+      - -Djack=disabled
+      - -Dpipewire-jack=disabled
     build-packages:
       - pkg-config
       - libdbus-1-dev
+      - libpulse-dev
     override-build: |
       wget -O - https://gitlab.freedesktop.org/pipewire/pipewire/-/commit/733ad43.patch | patch -p1
       snapcraftctl build
