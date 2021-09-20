@@ -173,7 +173,7 @@ parts:
       - libudev-dev
       - libdrm-dev
       - libcap-dev
-      - libgcrypt-dev
+      - libgcrypt20-dev
       - libkrb5-dev
       - libxkbcommon-dev
       - libpam0g-dev
