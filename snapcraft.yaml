@@ -1,9 +1,9 @@
-name: chromium
+name: lorenz-browser-no-gnome-extension
 adopt-info: chromium
 summary: Chromium web browser, open-source version of Chrome
 description: |
- An open-source browser project that aims to build a safer, faster, and more
- stable way for all Internet users to experience the web.
+  This snap is a copy of Canonical's Chromium snap with the changes made to use the gnome-extension reverted. Do not use this snap, as it may lack important security updates. |
+  https://github.com/Lorenz512/browser-snap
 confinement: strict
 base: core18
 assumes:
