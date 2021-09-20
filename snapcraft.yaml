@@ -473,14 +473,14 @@ parts:
   # Create a symlink xdg-email -> xdg-open, as the latter is perfectly able to
   # handle mailto: URLs (see https://launchpad.net/bugs/1849774).
   # xdg-open is a wrapper provided by the core snap.
-  xdg-email:
-    plugin: nil
-    override-pull: ""
-    override-prime: |
-      set -eux
-      mkdir -p usr/bin
-      cd usr/bin
-      ln -s /usr/bin/xdg-open xdg-email
+  #xdg-email:
+  #  plugin: nil
+  #  override-pull: ""
+  #  override-prime: |
+  #    set -eux
+  #    mkdir -p usr/bin
+  #    cd usr/bin
+  #    ln -s /usr/bin/xdg-open xdg-email
 
   # Build and install a more recent version of the VA-API library than what is
   # available in 18.04, because newer drivers depend on a newer version of the
