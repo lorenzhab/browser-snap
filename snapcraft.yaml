@@ -94,12 +94,12 @@ plugs:
     interface: content
     target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
-  chromium-config:
-    interface: personal-files
-    read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
-  etc-chromium-browser-policies:
-    interface: system-files
-    read: [/etc/chromium-browser/policies]
+  #chromium-config:
+  #  interface: personal-files
+  #  read: [$HOME/.config/chromium, $HOME/.chromium-browser.init]
+  #etc-chromium-browser-policies:
+  #  interface: system-files
+  #  read: [/etc/chromium-browser/policies]
 
 layout:
   /usr/lib/man-db:
