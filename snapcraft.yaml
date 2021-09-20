@@ -79,9 +79,9 @@ apps:
       - mpris
 
 plugs:
-#  browser-sandbox:
-#    interface: browser-support
-#    allow-sandbox: true
+  #browser-sandbox:
+  #  interface: browser-support
+  #  allow-sandbox: true
   gtk-3-themes:
     interface: content
     target: $SNAP/data-dir/themes
