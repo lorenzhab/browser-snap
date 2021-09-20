@@ -79,9 +79,9 @@ apps:
       - mpris
 
 plugs:
-  browser-sandbox:
-    interface: browser-support
-    allow-sandbox: true
+#  browser-sandbox:
+#    interface: browser-support
+#    allow-sandbox: true
   gtk-3-themes:
     interface: content
     target: $SNAP/data-dir/themes
@@ -307,7 +307,7 @@ parts:
 
       # Fix setuid bits on the sandbox executable
       # (ref: https://forum.snapcraft.io/t/call-for-testing-chromium-snap/1714/16)
-      chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome-sandbox
+      #chmod 4555 $SNAPCRAFT_PART_INSTALL/usr/lib/chromium-browser/chrome-sandbox
 
       # Generate and install the man page (see the "manpage" part)
       mkdir -p $SNAPCRAFT_PART_INSTALL/man1
