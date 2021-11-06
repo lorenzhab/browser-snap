@@ -124,8 +124,8 @@ parts:
 
   chromium:
     plugin: nil
-    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-93.0.4577.82.tar.xz
-    source-checksum: sha512/730e4a316fee4a5be1bf95301cf25c0c1d192ceeb661f051c1d74b7083fe928f1c5fd24c744cbbda6ef39c9edc64607a2621644e153e5e3de2201b5ac60e4d64
+    source: https://commondatastorage.googleapis.com/chromium-browser-official/chromium-95.0.4638.69.tar.xz
+    source-checksum: sha512/e8845a3add5f784342c51c530ed4fbf144f8ab16701d9dd6a2eedbd255167f39c26cf400d22f246ef5ad4afbb6a6133e17d767711587dd4bae18e3b5a997f95e
     after:
       - chromium-build
       - gtk3-locales
@@ -537,11 +537,6 @@ parts:
       if [ $(arch) = "x86_64" -o $(arch) = "i686" ]; then
         snapcraftctl build
       fi
-    stage-packages:
-      - on amd64,i386:
-        - libdrm2
-        - libdrm-intel1
-        - libpciaccess0
     prime:
       - -usr/share
 
@@ -578,7 +573,6 @@ parts:
       - binutils
       - findutils
       - g++
-      - libpciaccess-dev
     override-build: |
       if [ $(arch) = "i686" ]; then
         sed -i -e 's|-m${ARCH}||' \
@@ -589,9 +583,6 @@ parts:
         find $SNAPCRAFT_PART_INSTALL -name iHD_drv_video.so -print | xargs strip
         find $SNAPCRAFT_PART_INSTALL -name libigfxcmrt.so -print | xargs strip
       fi
-    stage-packages:
-      - on amd64,i386:
-        - libpciaccess0
     prime:
       - -usr/include
       - -usr/lib/*/pkgconfig
